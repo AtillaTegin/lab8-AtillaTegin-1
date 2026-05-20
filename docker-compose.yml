@@ -21,7 +21,8 @@ services:
       context: ./
       dockerfile: student-service/Dockerfile
     depends_on:
-      - student-db
+      student-db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://student-db:5432/studentDB
       SPRING_DATASOURCE_USERNAME: postgres
@@ -54,8 +55,10 @@ services:
       context: ./
       dockerfile: course-service/Dockerfile
     depends_on:
-      - course-db
-      - student-service
+      course-db:
+        condition: service_healthy
+      student-service:
+        condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://course-db:5432/courseDB
       SPRING_DATASOURCE_USERNAME: postgres

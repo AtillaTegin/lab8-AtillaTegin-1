@@ -48,6 +48,11 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// Disable the plain jar so only the executable Spring Boot bootJar is produced
+jar {
+    enabled = false
+}
+
 if (tasks.findByName('prepareKotlinBuildScriptModel') == null) {
     tasks.register('prepareKotlinBuildScriptModel') {
         group = 'ide'

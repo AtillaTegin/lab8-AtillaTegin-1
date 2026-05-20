@@ -5,4 +5,4 @@ COPY . .
 RUN chmod +x gradlew && ./gradlew :course-service:bootJar --no-daemon
 
 EXPOSE 8081
-ENTRYPOINT ["sh", "-c", "java -jar $(ls course-service/build/libs/*.jar | head -n 1)"]
+ENTRYPOINT ["java", "-jar", "course-service/build/libs/course-service-0.0.1-SNAPSHOT.jar"]

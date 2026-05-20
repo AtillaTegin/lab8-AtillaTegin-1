@@ -36,6 +36,11 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// Disable the plain jar so only the executable Spring Boot bootJar is produced
+jar {
+    enabled = false
+}
+
 // Some IDE integrations invoke this task even for Groovy DSL projects.
 if (tasks.findByName('prepareKotlinBuildScriptModel') == null) {
     tasks.register('prepareKotlinBuildScriptModel') {
