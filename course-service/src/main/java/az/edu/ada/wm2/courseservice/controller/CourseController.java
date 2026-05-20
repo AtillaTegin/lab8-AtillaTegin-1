@@ -1,5 +1,6 @@
 package az.edu.ada.wm2.courseservice.controller;
 
+import az.edu.ada.wm2.courseservice.model.dto.ApiResponse;
 import az.edu.ada.wm2.courseservice.model.dto.CourseRequestDto;
 import az.edu.ada.wm2.courseservice.model.dto.CourseResponseDto;
 import az.edu.ada.wm2.courseservice.model.dto.CourseStudentsResponseDto;
@@ -31,29 +32,28 @@ public class CourseController {
 
     @PostMapping
     @Operation(summary = "Create course", description = "Creates a new course.")
-    public ResponseEntity<CourseResponseDto> createCourse(@Valid @RequestBody CourseRequestDto requestDto) {
-        CourseResponseDto createdCourse = courseService.createCourse(requestDto);
-        return new ResponseEntity<>(createdCourse, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<CourseResponseDto>> createCourse(@Valid @RequestBody CourseRequestDto requestDto) {
+        return new ResponseEntity<>(ApiResponse.success(courseService.createCourse(requestDto)), HttpStatus.CREATED);
     }
 
     @GetMapping
     @Operation(summary = "Get all courses", description = "Returns all courses.")
-    public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
-        return ResponseEntity.ok(courseService.getAllCourses());
+    public ResponseEntity<ApiResponse<List<CourseResponseDto>>> getAllCourses() {
+        return ResponseEntity.ok(ApiResponse.success(courseService.getAllCourses()));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get course by id", description = "Returns a single course by id.")
-    public ResponseEntity<CourseResponseDto> getCourseById(@PathVariable Long id) {
-        return ResponseEntity.ok(courseService.getCourseById(id));
+    public ResponseEntity<ApiResponse<CourseResponseDto>> getCourseById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success(courseService.getCourseById(id)));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update course", description = "Updates a course by id.")
-    public ResponseEntity<CourseResponseDto> updateCourse(
+    public ResponseEntity<ApiResponse<CourseResponseDto>> updateCourse(
             @PathVariable Long id,
             @Valid @RequestBody CourseRequestDto requestDto) {
-        return ResponseEntity.ok(courseService.updateCourse(id, requestDto));
+        return ResponseEntity.ok(ApiResponse.success(courseService.updateCourse(id, requestDto)));
     }
 
     @DeleteMapping("/{id}")
@@ -68,11 +68,10 @@ public class CourseController {
             summary = "Enroll student",
             description = "Enrolls a student into a course after validating the student via Feign client."
     )
-    public ResponseEntity<EnrollmentResponseDto> enrollStudent(
+    public ResponseEntity<ApiResponse<EnrollmentResponseDto>> enrollStudent(
             @PathVariable Long courseId,
             @PathVariable Long studentId) {
-        EnrollmentResponseDto responseDto = courseService.enrollStudent(courseId, studentId);
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(ApiResponse.success(courseService.enrollStudent(courseId, studentId)), HttpStatus.CREATED);
     }
 
     @GetMapping("/{courseId}/students")
@@ -80,7 +79,7 @@ public class CourseController {
             summary = "List course students",
             description = "Returns detailed student data by calling student-service through RestTemplate."
     )
-    public ResponseEntity<CourseStudentsResponseDto> getCourseStudents(@PathVariable Long courseId) {
-        return ResponseEntity.ok(courseService.getCourseStudents(courseId));
+    public ResponseEntity<ApiResponse<CourseStudentsResponseDto>> getCourseStudents(@PathVariable Long courseId) {
+        return ResponseEntity.ok(ApiResponse.success(courseService.getCourseStudents(courseId)));
     }
 }

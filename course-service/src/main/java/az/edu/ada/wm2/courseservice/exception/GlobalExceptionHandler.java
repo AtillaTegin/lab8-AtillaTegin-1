@@ -34,6 +34,13 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI());
     }
 
+    @ExceptionHandler(PrerequisiteNotSatisfiedException.class)
+    public ResponseEntity<ApiErrorResponse> handlePrerequisiteNotSatisfied(
+            PrerequisiteNotSatisfiedException ex,
+            HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage(), request.getRequestURI());
+    }
+
     @ExceptionHandler(StudentServiceCommunicationException.class)
     public ResponseEntity<ApiErrorResponse> handleStudentServiceCommunication(
             StudentServiceCommunicationException ex,
@@ -71,6 +78,7 @@ public class GlobalExceptionHandler {
             String message,
             String path) {
         ApiErrorResponse response = new ApiErrorResponse(
+                "error",
                 LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),

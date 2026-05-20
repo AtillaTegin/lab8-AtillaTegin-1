@@ -8,8 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ApiErrorResponse {
 
+    private String status;
     private LocalDateTime timestamp;
-    private int status;
+    private int httpStatus;
     private String error;
     private String message;
     private String path;
